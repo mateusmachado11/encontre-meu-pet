@@ -3,21 +3,20 @@ import PetCard from '../components/PetCard';
 import FilterBar from '../components/FilterBar';
 import AdBanner from '../components/AdBanner';
 
-const mockLostPets = [
-    { id: 1, name: 'Bolinha', type: 'Cachorro', breed: 'Vira-lata', age: '2 anos', color: 'Caramelo', location: 'Goiânia', image: 'https://placehold.co/400x300/F97316/FFFFFF?text=Bolinha', status: 'Perdido', reward: 'R$ 100' },
-    { id: 2, name: 'Mimi', type: 'Gato', breed: 'Siamês', age: '1 ano', color: 'Branco e Cinza', location: 'Aparecida de Goiânia', image: 'https://placehold.co/400x300/4F46E5/FFFFFF?text=Mimi', status: 'Perdido', reward: 'R$ 50' },
-    { id: 3, name: 'Thor', type: 'Cachorro', breed: 'Golden Retriever', age: '3 anos', color: 'Dourado', location: 'Anápolis', image: 'https://placehold.co/400x300/10B981/FFFFFF?text=Thor', status: 'Encontrado', reward: null },
-    { id: 4, name: 'Frajola', type: 'Gato', breed: 'Vira-lata', age: '4 anos', color: 'Preto e Branco', location: 'Goiânia', image: 'https://placehold.co/400x300/6B7280/FFFFFF?text=Frajola', status: 'Perdido', reward: 'R$ 75' },
-];
+const PETS_PER_PAGE = 20;
 
-const Perdidos = () => {
-    const [pets, setPets] = useState([]);
+const Perdidos = ({ pets, onPetClick }) => {
+    const [currentPage, setCurrentPage] = useState(1);
 
+    const totalPages = Math.ceil(pets.length / PETS_PER_PAGE);
+    const startIndex = (currentPage - 1) * PETS_PER_PAGE;
+    const endIndex = startIndex + PETS_PER_PAGE;
+    const currentPets = pets.slice(startIndex, endIndex);
+
+    // Reseta a página para 1 se a lista de pets mudar (ex: filtro)
     useEffect(() => {
-        // Ordena do mais recente para o mais antigo (simulado pelo ID)
-        const sortedPets = mockLostPets.sort((a, b) => b.id - a.id);
-        setPets(sortedPets);
-    }, []);
+        setCurrentPage(1);
+    }, [pets]);
 
     return (
         <div>
@@ -25,10 +24,42 @@ const Perdidos = () => {
             <p className="text-center text-gray-600 mb-8">Filtre pelos alertas e ajude uma família a se reunir.</p>
             
             <FilterBar />
-            <AdBanner id="Anúncio Meio de Página" />
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {pets.map(pet => <PetCard key={pet.id} pet={pet} />)}
+
+            <div className="flex gap-8">
+                <aside className="hidden lg:block w-1/5">
+                    <AdBanner id="Lateral Esquerda" orientation="vertical" />
+                </aside>
+
+                <main className="flex-grow">
+                    <AdBanner id="Central" />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        {currentPets.map(pet => <PetCard key={pet.id} pet={pet} onClick={() => onPetClick(pet)} />)}
+                    </div>
+
+                    {totalPages > 1 && (
+                        <div className="flex justify-center items-center gap-4 mt-8">
+                            <button 
+                                onClick={() => setCurrentPage(p => Math.max(1, p - 1))} 
+                                disabled={currentPage === 1}
+                                className="px-4 py-2 bg-white rounded-lg shadow disabled:opacity-50"
+                            >
+                                Anterior
+                            </button>
+                            <span>Página {currentPage} de {totalPages}</span>
+                            <button 
+                                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} 
+                                disabled={currentPage === totalPages}
+                                className="px-4 py-2 bg-white rounded-lg shadow disabled:opacity-50"
+                            >
+                                Próxima
+                            </button>
+                        </div>
+                    )}
+                </main>
+
+                <aside className="hidden lg:block w-1/5">
+                    <AdBanner id="Lateral Direita" orientation="vertical" />
+                </aside>
             </div>
         </div>
     );

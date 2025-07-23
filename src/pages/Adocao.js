@@ -2,19 +2,19 @@ import React, { useState, useEffect } from 'react';
 import PetCard from '../components/PetCard';
 import FilterBar from '../components/FilterBar';
 
-const mockAdoptionPets = [
-    { id: 5, name: 'Amora', type: 'Cachorro', breed: 'Vira-lata', age: '6 meses', color: 'Preta', location: 'Goiânia', image: 'https://placehold.co/400x300/EC4899/FFFFFF?text=Amora' },
-    { id: 6, name: 'Simba', type: 'Gato', breed: 'SRD', age: '1 ano', color: 'Laranja', location: 'Aparecida de Goiânia', image: 'https://placehold.co/400x300/F59E0B/FFFFFF?text=Simba' },
-    { id: 7, name: 'Mel', type: 'Cachorro', breed: 'Vira-lata', age: '3 anos', color: 'Caramelo', location: 'Goiânia', image: 'https://placehold.co/400x300/8B5CF6/FFFFFF?text=Mel' },
-];
+const PETS_PER_PAGE = 20;
 
-const Adocao = () => {
-    const [pets, setPets] = useState([]);
+const Adocao = ({ pets, setAdoptionModalOpen, onPetClick }) => {
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const totalPages = Math.ceil(pets.length / PETS_PER_PAGE);
+    const startIndex = (currentPage - 1) * PETS_PER_PAGE;
+    const endIndex = startIndex + PETS_PER_PAGE;
+    const currentPets = pets.slice(startIndex, endIndex);
 
     useEffect(() => {
-        const sortedPets = mockAdoptionPets.sort((a, b) => b.id - a.id);
-        setPets(sortedPets);
-    }, []);
+        setCurrentPage(1);
+    }, [pets]);
 
     return (
         <div>
@@ -23,7 +23,7 @@ const Adocao = () => {
                     <h2 className="text-3xl font-bold">Adoção Responsável</h2>
                     <p className="text-gray-600">Encontre um novo amigo para a vida toda.</p>
                 </div>
-                <button className="bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">
+                <button onClick={() => setAdoptionModalOpen(true)} className="bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">
                     Criar Anúncio
                 </button>
             </div>
@@ -31,8 +31,28 @@ const Adocao = () => {
             <FilterBar />
             
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {pets.map(pet => <PetCard key={pet.id} pet={pet} />)}
+                {currentPets.map(pet => <PetCard key={pet.id} pet={pet} onClick={() => onPetClick(pet)} />)}
             </div>
+
+            {totalPages > 1 && (
+                <div className="flex justify-center items-center gap-4 mt-8">
+                    <button 
+                        onClick={() => setCurrentPage(p => Math.max(1, p - 1))} 
+                        disabled={currentPage === 1}
+                        className="px-4 py-2 bg-white rounded-lg shadow disabled:opacity-50"
+                    >
+                        Anterior
+                    </button>
+                    <span>Página {currentPage} de {totalPages}</span>
+                    <button 
+                        onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} 
+                        disabled={currentPage === totalPages}
+                        className="px-4 py-2 bg-white rounded-lg shadow disabled:opacity-50"
+                    >
+                        Próxima
+                    </button>
+                </div>
+            )}
         </div>
     );
 };
