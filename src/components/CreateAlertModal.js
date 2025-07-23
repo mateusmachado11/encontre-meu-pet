@@ -23,6 +23,7 @@ const CreateAlertModal = ({ isOpen, onClose, type, onAddPet }) => {
             name: formData.get('pet-name') || 'Sem Nome',
             status: isAdoption ? null : formData.get('pet-status'),
             type: formData.get('pet-type') || 'Não informado',
+            sex: formData.get('pet-sex') || 'Não informado',
             breed: formData.get('pet-breed') || 'Não informada',
             age: formData.get('pet-age') || 'Não informada',
             color: formData.get('pet-color') || 'Não informada',
@@ -48,17 +49,17 @@ const CreateAlertModal = ({ isOpen, onClose, type, onAddPet }) => {
                 <form className="space-y-4" onSubmit={handleSubmit}>
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <input name="pet-name" type="text" placeholder="Nome do Pet" className="w-full p-3 border rounded-lg" required />
-                        {!isAdoption && (
+                        {!isAdoption ? (
                         <select name="pet-status" className="w-full p-3 border rounded-lg" required>
                             <option value="">Status*</option>
                             <option value="Perdido">Perdido</option>
                             <option value="Encontrado">Encontrado</option>
                         </select>
-                        )}
+                        ) : <div />}
                      </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <select name="pet-type" className="w-full p-3 border rounded-lg">
-                            <option value="">Selecione o tipo</option>
+                            <option value="">Tipo</option>
                             <option value="Cachorro">Cachorro</option>
                             <option value="Gato">Gato</option>
                             <option disabled>---------</option>
@@ -66,6 +67,11 @@ const CreateAlertModal = ({ isOpen, onClose, type, onAddPet }) => {
                             <option value="Coelho">Coelho</option>
                             <option value="Hamster">Hamster</option>
                             <option value="Outro">Outro</option>
+                        </select>
+                         <select name="pet-sex" className="w-full p-3 border rounded-lg">
+                            <option value="">Sexo</option>
+                            <option value="Macho">Macho</option>
+                            <option value="Fêmea">Fêmea</option>
                         </select>
                         <div>
                             <input list="racas" name="pet-breed" placeholder="Raça" className="w-full p-3 border rounded-lg" />

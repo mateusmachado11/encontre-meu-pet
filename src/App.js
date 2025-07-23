@@ -6,19 +6,19 @@ import CreateAlertModal from './components/CreateAlertModal';
 import PetDetailsPage from './pages/PetDetailsPage';
 import ChatModal from './components/ChatModal';
 
-// IMPORTAÇÕES CORRIGIDAS: Adicionadas as linhas que estavam faltando
 import Inicio from './pages/Inicio';
 import Perdidos from './pages/Perdidos';
 import Adocao from './pages/Adocao';
 import Parceiros from './pages/Parceiros';
 import Ongs from './pages/Ongs';
 
-// Dados iniciais movidos para App.js para que possam ser atualizados
+// Dados iniciais atualizados com a propriedade 'sex'
 const initialLostPets = [
     ...Array.from({ length: 25 }, (_, i) => ({
         id: 25 - i,
         name: `Pet Exemplo ${25 - i}`,
         type: i % 2 === 0 ? 'Cachorro' : 'Gato',
+        sex: i % 2 === 0 ? 'Macho' : 'Fêmea',
         breed: 'Vira-lata',
         age: `${i % 5 + 1} anos`,
         color: 'Colorido',
@@ -36,13 +36,13 @@ const initialLostPets = [
 ];
 
 const initialAdoptionPets = [
-    { id: 105, name: 'Amora', type: 'Cachorro', breed: 'Vira-lata', age: '6 meses', color: 'Preta', location: 'Goiânia', setor: 'Jardim América', image: 'https://placehold.co/400x300/EC4899/FFFFFF?text=Amora', description: 'Uma cachorrinha muito carinhosa e brincalhona. Se dá bem com outros cães e crianças. Vacinada e castrada.', contact: { phone: null, useChat: true } },
-    { id: 106, name: 'Simba', type: 'Gato', breed: 'SRD', age: '1 ano', color: 'Laranja', location: 'Aparecida de Goiânia', setor: 'Garavelo', image: 'https://placehold.co/400x300/F59E0B/FFFFFF?text=Simba', description: 'Um gatão laranja super companheiro. Adora um sofá e um carinho na barriga. Castrado e vermifugado.', contact: { phone: '(62) 98888-1111', useChat: true } },
-    { id: 107, name: 'Mel', type: 'Cachorro', breed: 'Vira-lata', age: '3 anos', color: 'Caramelo', location: 'Goiânia', setor: 'Bueno', image: 'https://placehold.co/400x300/8B5CF6/FFFFFF?text=Mel', description: 'Uma gigante gentil. Mel é muito obediente e calma. Perfeita para quem tem espaço e amor para dar.', contact: { phone: null, useChat: true } },
+    { id: 105, name: 'Amora', type: 'Cachorro', sex: 'Fêmea', breed: 'Vira-lata', age: '6 meses', color: 'Preta', location: 'Goiânia', setor: 'Jardim América', image: 'https://placehold.co/400x300/EC4899/FFFFFF?text=Amora', description: 'Uma cachorrinha muito carinhosa e brincalhona. Se dá bem com outros cães e crianças. Vacinada e castrada.', contact: { phone: null, useChat: true } },
+    { id: 106, name: 'Simba', type: 'Gato', sex: 'Macho', breed: 'SRD', age: '1 ano', color: 'Laranja', location: 'Aparecida de Goiânia', setor: 'Garavelo', image: 'https://placehold.co/400x300/F59E0B/FFFFFF?text=Simba', description: 'Um gatão laranja super companheiro. Adora um sofá e um carinho na barriga. Castrado e vermifugado.', contact: { phone: '(62) 98888-1111', useChat: true } },
+    { id: 107, name: 'Mel', type: 'Cachorro', sex: 'Fêmea', breed: 'Vira-lata', age: '3 anos', color: 'Caramelo', location: 'Goiânia', setor: 'Bueno', image: 'https://placehold.co/400x300/8B5CF6/FFFFFF?text=Mel', description: 'Uma gigante gentil. Mel é muito obediente e calma. Perfeita para quem tem espaço e amor para dar.', contact: { phone: null, useChat: true } },
 ].sort((a, b) => b.id - a.id);
 
 export default function App() {
-    const [activePage, setActivePage] = useState('perdidos');
+    const [activePage, setActivePage] = useState('inicio');
     const [isLoginModalOpen, setLoginModalOpen] = useState(false);
     const [isAlertModalOpen, setAlertModalOpen] = useState(false);
     const [isAdoptionModalOpen, setAdoptionModalOpen] = useState(false);
@@ -74,7 +74,7 @@ export default function App() {
         }
 
         const pages = {
-            inicio: <Inicio setActivePage={setActivePage} />,
+            inicio: <Inicio setActivePage={setActivePage} setAlertModalOpen={setAlertModalOpen} setAdoptionModalOpen={setAdoptionModalOpen} />,
             perdidos: <Perdidos pets={lostPets} onPetClick={handlePetClick} />,
             adocao: <Adocao pets={adoptionPets} setAdoptionModalOpen={setAdoptionModalOpen} onPetClick={handlePetClick} />,
             parceiros: <Parceiros />,
@@ -89,7 +89,6 @@ export default function App() {
               activePage={activePage} 
               setActivePage={setActivePage} 
               onLoginClick={() => setLoginModalOpen(true)}
-              onCreateAlertClick={() => setAlertModalOpen(true)}
               onLogoClick={handleBackToList}
             />
             <main className="container mx-auto p-4 md:p-8">

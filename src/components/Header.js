@@ -1,7 +1,7 @@
 import React from 'react';
 import NavLink from './NavLink';
 
-const Header = ({ activePage, setActivePage, onLoginClick, onCreateAlertClick, onLogoClick }) => {
+const Header = ({ activePage, setActivePage, onLoginClick, onLogoClick }) => {
     
     const handleNavClick = (page) => {
         onLogoClick(); // Limpa a seleção de pet ao navegar
@@ -22,9 +22,6 @@ const Header = ({ activePage, setActivePage, onLoginClick, onCreateAlertClick, o
                     <NavLink page="ongs" activePage={activePage} setActivePage={handleNavClick}>ONGs</NavLink>
                 </nav>
                 <div className="flex items-center gap-4">
-                    <button onClick={onCreateAlertClick} className="bg-orange-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-orange-600 transition-colors">
-                        Criar Alerta
-                    </button>
                      <button onClick={onLoginClick} className="font-medium text-gray-600 hover:text-orange-600">
                         Login
                     </button>

@@ -33,7 +33,7 @@ const PetDetailsPage = ({ pet, onBack, onStartChat }) => {
                             {/* Coluna de Informações */}
                             <div>
                                 <h2 className="text-4xl font-bold">{pet.name}</h2>
-                                <p className="text-lg text-gray-600 mb-4">{pet.breed}, {pet.age}</p>
+                                <p className="text-lg text-gray-600 mb-4">{pet.breed}, {pet.sex}, {pet.age}</p>
                                 {pet.status && (
                                     <span className={`mb-4 text-sm font-semibold inline-block py-1 px-2 uppercase rounded-full ${pet.status === 'Perdido' ? 'text-red-600 bg-red-200' : 'text-green-600 bg-green-200'}`}>
                                         {pet.status}

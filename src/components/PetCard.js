@@ -7,7 +7,7 @@ const PetCard = ({ pet, onClick }) => {
             <img src={pet.image} alt={pet.name} className="w-full h-48 object-cover" />
             <div className="p-4 flex flex-col flex-grow">
                 <h3 className="font-bold text-lg">{pet.name}</h3>
-                <p className="text-sm text-gray-600">{pet.breed}, {pet.age}</p>
+                <p className="text-sm text-gray-600">{pet.breed}, {pet.sex}</p>
                 <p className="text-sm text-gray-500 mt-1">📍 {pet.setor}, {pet.location}</p>
                 {pet.status && (
                     <span className={`mt-2 text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full self-start ${pet.status === 'Perdido' ? 'text-red-600 bg-red-200' : 'text-green-600 bg-green-200'}`}>

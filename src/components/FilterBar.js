@@ -11,12 +11,8 @@ const FilterBar = () => {
 
     return (
         <div className="bg-white p-6 rounded-xl shadow-md mb-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <select className="p-2 border rounded-lg bg-gray-50">
-                    <option value="todos">Perdidos e Achados</option>
-                    <option value="perdido">Apenas Perdidos</option>
-                    <option value="achado">Apenas Achados</option>
-                </select>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                <select className="p-2 border rounded-lg bg-gray-50"><option value="todos">Perdidos e Achados</option><option value="perdido">Apenas Perdidos</option><option value="achado">Apenas Achados</option></select>
                 <select className="p-2 border rounded-lg bg-gray-50">
                     <option value="todos">Qualquer Data</option>
                     <option value="hoje">Hoje</option>
@@ -29,7 +25,12 @@ const FilterBar = () => {
                     <option value="Gato">Gato</option>
                     <option value="Outros">Outros</option>
                 </select>
-                <div>
+                 <select className="p-2 border rounded-lg bg-gray-50">
+                    <option value="todos">Todos os Sexos</option>
+                    <option value="Macho">Macho</option>
+                    <option value="Fêmea">Fêmea</option>
+                </select>
+                 <div>
                     <input list="racas-filter" name="raca-filter" placeholder="Raça" className="w-full p-2 border rounded-lg bg-gray-50" />
                     <datalist id="racas-filter">
                         <option value="Vira-lata (SRD)"></option><option value="Shih Tzu"></option><option value="Yorkshire"></option><option value="Poodle"></option><option value="Golden Retriever"></option><option value="Labrador"></option><option value="Siamês"></option><option value="Persa"></option>
