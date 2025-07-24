@@ -5,7 +5,7 @@ import AdBanner from '../components/AdBanner';
 
 const PETS_PER_PAGE = 20;
 
-const Perdidos = ({ pets, onPetClick }) => {
+const Perdidos = ({ pets, onPetClick, setAlertModalOpen }) => {
     const [currentPage, setCurrentPage] = useState(1);
 
     const totalPages = Math.ceil(pets.length / PETS_PER_PAGE);
@@ -13,15 +13,21 @@ const Perdidos = ({ pets, onPetClick }) => {
     const endIndex = startIndex + PETS_PER_PAGE;
     const currentPets = pets.slice(startIndex, endIndex);
 
-    // Reseta a página para 1 se a lista de pets mudar (ex: filtro)
     useEffect(() => {
         setCurrentPage(1);
     }, [pets]);
 
     return (
         <div>
-            <h2 className="text-3xl font-bold text-center mb-2">Animais Perdidos e Encontrados</h2>
-            <p className="text-center text-gray-600 mb-8">Filtre pelos alertas e ajude uma família a se reunir.</p>
+            <div className="flex justify-between items-center mb-8">
+                <div>
+                    <h2 className="text-3xl font-bold">Animais Perdidos e Encontrados</h2>
+                    <p className="text-gray-600">Filtre pelos alertas e ajude uma família a se reunir.</p>
+                </div>
+                <button onClick={() => setAlertModalOpen(true)} className="bg-orange-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-orange-600 transition-colors">
+                    Criar Alerta
+                </button>
+            </div>
             
             <FilterBar />
 

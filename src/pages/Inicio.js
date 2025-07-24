@@ -1,6 +1,8 @@
 import React from 'react';
 import AdBanner from '../components/AdBanner';
 import PetCard from '../components/PetCard';
+import PartnerCard from '../components/PartnerCard';
+import OngCard from '../components/OngCard';
 
 const mockLostPets = [
     { id: 1, name: 'Bolinha', breed: 'Vira-lata', sex: 'Macho', location: 'Goiânia', setor: 'Setor Bueno', image: 'https://placehold.co/400x300/F97316/FFFFFF?text=Bolinha', status: 'Perdido', reward: 'R$ 100' },
@@ -25,12 +27,25 @@ const Section = ({ title, children, buttonText, onButtonClick }) => (
     </section>
 );
 
-const Inicio = ({ setActivePage, setAlertModalOpen, setAdoptionModalOpen }) => {
+const StatsCard = ({ value, label, color }) => (
+    <div className={`bg-white p-6 rounded-xl shadow-lg text-center border-t-4 ${color}`}>
+        <p className="text-4xl font-bold text-gray-800">{value}</p>
+        <p className="text-gray-500 mt-1">{label}</p>
+    </div>
+);
+
+const Inicio = ({ setActivePage, setAlertModalOpen, setAdoptionModalOpen, partners, ongs }) => {
     return (
         <div>
             <div className="text-center mb-12">
                 <h2 className="text-4xl font-bold text-gray-800 mb-2">Bem-vindo à Comunidade</h2>
                 <p className="text-lg text-gray-600">Juntos, podemos fazer a diferença na vida de um pet.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <StatsCard value="1.245" label="Animais Encontrados" color="border-green-500" />
+                <StatsCard value="3.876" label="Alertas Ativos" color="border-orange-500" />
+                <StatsCard value="892" label="Adoções Realizadas" color="border-blue-500" />
             </div>
 
             <div className="bg-white p-6 rounded-xl shadow-md mb-8 flex flex-col md:flex-row gap-4 items-center justify-center">
@@ -50,6 +65,14 @@ const Inicio = ({ setActivePage, setAlertModalOpen, setAdoptionModalOpen }) => {
 
             <Section title="Anjinhos para Adoção" buttonText="Ver Todos" onButtonClick={() => setActivePage('adocao')}>
                 {mockAdoptionPets.slice(0, 5).map(pet => <PetCard key={pet.id} pet={pet} onClick={() => {}} />)}
+            </Section>
+            
+            <Section title="Parceiros em Destaque" buttonText="Ver Todos" onButtonClick={() => setActivePage('parceiros')}>
+                {partners.slice(0, 5).map(partner => <PartnerCard key={partner.id} partner={partner} onClick={() => {}} />)}
+            </Section>
+
+            <Section title="Apoie uma ONG" buttonText="Ver Todas" onButtonClick={() => setActivePage('ongs')}>
+                {ongs.slice(0, 5).map(ong => <OngCard key={ong.id} ong={ong} onClick={() => {}} />)}
             </Section>
         </div>
     );
