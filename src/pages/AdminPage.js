@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { db } from '../firebase';
+import { collection, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
+
 import AdminSidebar from '../components/AdminSidebar';
 import PartnerManager from '../components/PartnerManager';
 import OngManager from '../components/OngManager';
 import AdminFormModal from '../components/AdminFormModal';
 
-const AdminPage = ({ partners, setPartners, ongs, setNgos }) => {
+const AdminPage = ({ partners, ongs, refreshData }) => {
     const [activeManager, setActiveManager] = useState('partners');
     const [isFormOpen, setFormOpen] = useState(false);
     const [editingData, setEditingData] = useState(null);
@@ -22,29 +25,37 @@ const AdminPage = ({ partners, setPartners, ongs, setNgos }) => {
         setFormOpen(true);
     };
 
-    const handleDelete = (type, id) => {
+    const handleDelete = async (type, id) => {
         if (window.confirm('Tem a certeza de que deseja remover este item?')) {
-            if (type === 'partner') {
-                setPartners(current => current.filter(p => p.id !== id));
-            } else {
-                setNgos(current => current.filter(o => o.id !== id));
+            const collectionName = type === 'partner' ? 'partners' : 'ongs';
+            try {
+                await deleteDoc(doc(db, collectionName, id));
+                alert('Item removido com sucesso!');
+                refreshData();
+            } catch (error) {
+                console.error("Erro ao remover documento: ", error);
+                alert('Ocorreu um erro ao remover o item.');
             }
         }
     };
 
-    const handleSave = (type, data) => {
-        if (type === 'partner') {
-            if (data.id) { // Edit
-                setPartners(current => current.map(p => p.id === data.id ? data : p));
-            } else { // Add
-                setPartners(current => [{ ...data, id: Date.now() }, ...current]);
+    const handleSave = async (type, data) => {
+        const collectionName = type === 'partner' ? 'partners' : 'ongs';
+        try {
+            if (data.id) { // Editar
+                const docRef = doc(db, collectionName, data.id);
+                const { id, ...dataToUpdate } = data; // Remove o id do objeto
+                await updateDoc(docRef, dataToUpdate);
+                alert('Item atualizado com sucesso!');
+            } else { // Adicionar
+                await addDoc(collection(db, collectionName), data);
+                alert('Item adicionado com sucesso!');
             }
-        } else { // ONG
-             if (data.id) { // Edit
-                setNgos(current => current.map(o => o.id === data.id ? data : o));
-            } else { // Add
-                setNgos(current => [{ ...data, id: Date.now() }, ...current]);
-            }
+            refreshData();
+            setFormOpen(false);
+        } catch (error) {
+            console.error("Erro ao guardar documento: ", error);
+            alert('Ocorreu um erro ao guardar o item.');
         }
     };
 

@@ -22,7 +22,7 @@ const Perdidos = ({ pets, onPetClick, setAlertModalOpen }) => {
             <div className="flex justify-between items-center mb-8">
                 <div>
                     <h2 className="text-3xl font-bold">Animais Perdidos e Encontrados</h2>
-                    <p className="text-gray-600">Filtre pelos alertas e ajude uma família a se reunir.</p>
+                    <p className="text-gray-600">Filtre pelos alertas e ajude uma família a reunir-se.</p>
                 </div>
                 <button onClick={() => setAlertModalOpen(true)} className="bg-orange-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-orange-600 transition-colors">
                     Criar Alerta
@@ -38,9 +38,16 @@ const Perdidos = ({ pets, onPetClick, setAlertModalOpen }) => {
 
                 <main className="flex-grow">
                     <AdBanner id="Central" />
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {currentPets.map(pet => <PetCard key={pet.id} pet={pet} onClick={() => onPetClick(pet)} />)}
-                    </div>
+                    {pets.length > 0 ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                            {currentPets.map(pet => <PetCard key={pet.id} pet={pet} onClick={() => onPetClick(pet)} />)}
+                        </div>
+                    ) : (
+                        <div className="text-center p-10 bg-white rounded-lg shadow">
+                            <h3 className="text-xl font-semibold text-gray-700">Nenhum alerta encontrado</h3>
+                            <p className="text-gray-500 mt-2">Ainda não há alertas nesta categoria. Seja o primeiro a criar um!</p>
+                        </div>
+                    )}
 
                     {totalPages > 1 && (
                         <div className="flex justify-center items-center gap-4 mt-8">
