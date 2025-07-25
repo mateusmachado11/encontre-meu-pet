@@ -25,6 +25,10 @@ const Header = ({ activePage, setActivePage, onLoginClick, onLogoClick }) => {
                      <button onClick={onLoginClick} className="font-medium text-gray-600 hover:text-orange-600">
                         Login
                     </button>
+                    {/* Link de Admin para desenvolvimento */}
+                    <button onClick={() => handleNavClick('admin')} className="font-medium text-sm text-blue-600 hover:text-blue-800">
+                        Admin
+                    </button>
                 </div>
             </div>
         </header>
